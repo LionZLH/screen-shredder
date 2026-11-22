@@ -1,34 +1,62 @@
-# 屏幕碎纸机
+# 屏幕碎纸机 (Screen Shredder)
 
-Win + Mac 桌面小工具。屏幕右缘露出一道进纸口，把文件拖进去，齿轮卷动，底下掉出同色纸条。文件进的是系统回收站，不是彻底删除。
+<p align="center">
+  <img src="assets/demo.gif" alt="屏幕碎纸机演示" width="360" />
+</p>
 
-macOS 进废纸篓，Windows 进回收站，和拖到废纸篓图标一样，可以还原。没有多次覆写。首页、磁盘根目录、`/System` 这类整夹位置会拒绝。
+<p align="center">
+  <strong>一款治愈感满满的桌面拟物交互工具 · 支持 macOS 与 Windows 双平台</strong>
+</p>
 
-来源对话：[桌面吸尘器App的出圈密码](https://share.gemini.google/fQkxombHHZaK)
+<p align="center">
+  <a href="https://github.com/LionZLH/screen-shredder/releases/latest"><img src="https://img.shields.io/github/v/release/LionZLH/screen-shredder?color=brightgreen&label=Download" alt="Latest Release"></a>
+  <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-blue" alt="Platform">
+  <img src="https://img.shields.io/badge/Powered%20By-Tauri%20v2-orange" alt="Tauri v2">
+</p>
 
-## 这一版有什么
+---
 
-1. **边缘进纸口**：平时只在屏幕右侧中间露出金属口和一颗灯。鼠标靠近，或拖着文件过来，机身滑出。
-2. **按文件颜色掉纸条**：PDF 偏红，表格偏绿，图片偏赭。纸条落在出纸口下面的金属唇上，可以倒掉。倒掉只清屏幕上的纸屑。
-3. **选文件 / 选文件夹**：菜单栏图标，或机身上的「选文件」。文件夹会整夹进回收站。
-4. **声音**：灯是开关。小文件咬一下，大文件绞得久一点。
+## ✨ 亮点特色
 
-截图即粉碎还没做。那一步要屏幕录制权限，和「放进回收站」不是一回事。
+* 🗄️ **屏幕边缘拟物进纸口**：平时轻隐在屏幕边缘，鼠标或拖拽文件靠近时顺滑滑出；全透明无框体，不阻挡桌面正常操作。
+* ✂️ **沉浸式物理拟音与动画**：内置微动开关与机械切纸拟音，伴随真实纸张卷入、齿条粉碎与纸屑掉落物理动效。
+* 🎨 **文件类型智能染色**：自动感知拖入文件类型（PDF 鲜红、表格翠绿、图片赭黄、代码文件等），生成对应色泽的真实纸屑。
+* 🛡️ **绝对安全的「真删除」**：文件直接安全移入**系统原生回收站**（macOS 废纸篓 / Windows 回收站），随时可以右键一键放回原处，绝不擅自粉碎擦写磁盘。
+* 🕶️ **趣味彩蛋**：支持极速连发连碎与神秘的「黑客帝国代码雨」等隐藏视觉效果。
 
-## 运行
+---
 
-需要 Node 和 Rust。
+## 📥 下载安装
+
+直接前往 [**Releases 发布页**](https://github.com/LionZLH/screen-shredder/releases/latest) 下载对应系统的安装包，双击即可运行，**无需任何开发环境**：
+
+| 系统 | 下载文件 | 说明 |
+| :--- | :--- | :--- |
+| **macOS (Apple Silicon)** | `*.aarch64.dmg` | M1 / M2 / M3 / M4 芯片 Mac |
+| **macOS (Intel)** | `*.x64.dmg` | Intel 处理器 Mac |
+| **Windows** | `*-setup.exe` | Windows 10 / 11 64位系统一键安装 |
+
+> **提示**：
+> * **macOS 首次打开**：若提示未受信任开发者，前往「系统设置 → 隐私与安全性」点击「仍要打开」即可。
+> * **Windows 首次打开**：若提示 SmartScreen 拦截，点击「更多信息 → 仍要运行」即可。
+
+---
+
+## 🛠️ 本地开发构建（仅面向开发者）
+
+如果你想自行修改或编译本项目：
 
 ```bash
-cd 屏幕碎纸机
+# 1. 克隆仓库
+git clone https://github.com/LionZLH/screen-shredder.git
+cd screen-shredder
+
+# 2. 安装前端依赖
 npm install
-npm run app
+
+# 3. 启动开发模式
+npm run tauri dev
+
+# 4. 构建正式发行包
+npm run tauri build
 ```
-
-浏览器里看机器长什么样（不会动真实文件）：
-
-```bash
-npm run dev
-```
-
-然后打开 http://127.0.0.1:1420 。点左边的文件名，或拖到机器上。
