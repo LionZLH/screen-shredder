@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "屏幕碎纸机",
+  "productName": "Screen-Shredder",
   "version": "0.1.0",
   "identifier": "com.ggzyyx.shredder",
   "build": {
