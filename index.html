@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>屏幕碎纸机 · S-01</title>
+  </head>
+  <body>
+    <!-- 浏览器预览工作台（桌面 Tauri 模式下隐藏） -->
+    <div id="desk">
+      <div class="desk-header">
+        <span class="desk-badge">PREVIEW MODE</span>
+        <h1>桌面碎纸机 S-01</h1>
+        <p>点击或将下方测试文件拖入右侧进纸口。预览模式不会删除真实文件。</p>
+      </div>
+
+      <div class="desk-files">
+        <button class="file-card" type="button" draggable="true" data-name="2026_Q4_保密合同.pdf" data-ext="pdf" data-bytes="1420000">
+          <span class="file-tag" data-kind="pdf">PDF</span>
+          <span class="file-name">2026_Q4_保密合同.pdf</span>
+          <span class="file-meta">1.4 MB · 文档</span>
+        </button>
+
+        <button class="file-card" type="button" draggable="true" data-name="十一月报销明细.xlsx" data-ext="xlsx" data-bytes="860000">
+          <span class="file-tag" data-kind="grid">XLSX</span>
+          <span class="file-name">十一月报销明细.xlsx</span>
+          <span class="file-meta">860 KB · 表格</span>
+        </button>
+
+        <button class="file-card" type="button" draggable="true" data-name="屏幕截图_1520.png" data-ext="png" data-bytes="3800000">
+          <span class="file-tag" data-kind="photo">PNG</span>
+          <span class="file-name">屏幕截图_1520.png</span>
+          <span class="file-meta">3.8 MB · 图片</span>
+        </button>
+
+        <button class="file-card" type="button" draggable="true" data-name="旧版设计稿_废弃" data-ext="" data-dir="1" data-bytes="5200000">
+          <span class="file-tag" data-kind="folder">DIR</span>
+          <span class="file-name">旧版设计稿_废弃/</span>
+          <span class="file-meta">文件夹 · 整夹</span>
+        </button>
+        <button class="file-card file-card-matrix" type="button" draggable="true" data-name="matrix_payload.rs" data-ext="rs" data-bytes="102400">
+          <span class="file-tag" data-kind="matrix">CODE</span>
+          <span class="file-name">matrix_payload.rs</span>
+          <span class="file-meta">102 KB · 🕶️ 黑客代码雨</span>
+        </button>
+      </div>
+
+      <div class="desk-actions">
+        <button id="demo-batch" class="desk-btn" type="button">连碎 4 份文件</button>
+        <button id="demo-matrix" class="desk-btn desk-btn-matrix" type="button">🕶️ 代码雨彩蛋</button>
+      </div>
+    </div>
+
+    <!-- 悬浮在屏幕右侧的精密碎纸机主体 -->
+    <div id="machine" data-mode="strip">
+      <!-- 收缩态露在屏幕最右边缘的金属侧耳 -->
+      <div class="dock-ear" aria-hidden="true">
+        <span class="dock-grip"></span>
+        <span class="dock-dot"></span>
+        <span class="dock-grip"></span>
+      </div>
+
+      <div class="chassis">
+        <!-- 顶部三层立体进纸结构：后导纸坡(z:2) -> 进纸纸张(z:5) -> 前唇与机头面板(z:8) -->
+        <div class="head-assembly">
+          <!-- 层1：机头顶部后导纸坡与黑色碎纸缝隙后壁 -->
+          <div class="throat-back" aria-hidden="true">
+            <div class="throat-cavity">
+              <div class="roller roller-back"></div>
+            </div>
+          </div>
+
+          <!-- 层2：严格对齐碎纸缝隙正中央的裁剪舞台（纸张实打实插进缝隙里） -->
+          <div class="feed-stage">
+            <div id="pile" hidden></div>
+          </div>
+
+          <!-- 层3：碎纸口前唇 + 精密阳极氧化机头前面板 -->
+          <div class="shredder-head">
+            <div class="throat-front-lip" aria-hidden="true">
+              <div class="roller roller-front"></div>
+              <div class="slot-glow"></div>
+            </div>
+
+            <!-- 前面板控制区 -->
+            <div class="control-deck">
+              <div class="deck-top">
+                <div class="brand-cluster">
+                  <button id="lamp" type="button" aria-pressed="true" aria-label="声音已开启" title="切换机械音效">
+                    <span class="led-core"></span>
+                  </button>
+                  <button id="skin-toggle" class="brand-text" type="button" title="点击切换外观皮肤（黑曜石暗黑 / 纯白极简）">
+                    <span class="model-id">S-01</span>
+                    <span id="skin-label" class="safety-tag">DARK</span>
+                  </button>
+                </div>
+
+                <div class="vent-grille" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+
+              <!-- 微型 OLED 状态屏 -->
+              <div class="oled-screen">
+                <div class="oled-meta">
+                  <span class="oled-dot"></span>
+                  <span id="oled-state">STANDBY</span>
+                  <span id="oled-counter">000</span>
+                </div>
+                <p id="status" role="status">拖入文件 · 放入废纸篓</p>
+              </div>
+
+              <!-- 底部实体控制条：三档销毁模式 + 选文件 -->
+              <div class="deck-controls">
+                <div class="mode-switch" role="group" aria-label="销毁模式">
+                  <button id="mode-strip" class="mode-btn is-active" type="button" data-mode="strip">条切</button>
+                  <button id="mode-cross" class="mode-btn" type="button" data-mode="cross">粒碎</button>
+                  <button id="mode-burn" class="mode-btn" type="button" data-mode="burn">焚毁</button>
+                </div>
+                <button id="pick" class="hw-btn" type="button" title="选择文件放入废纸篓">
+                  <span class="hw-btn-dot"></span>
+                  <span>选文件</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 底部出纸金属导口 -->
+            <div class="exit-chute" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <!-- 下方半透明熏黑亚克力集纸仓 & 实时柔性物理碎纸画布 -->
+        <div id="waste-bin" class="waste-bin">
+          <div class="bin-glass" aria-hidden="true">
+            <div class="bin-scale">
+              <span class="bin-max-label">MAX</span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <canvas id="shred-canvas"></canvas>
+          <div class="bin-footer">
+            <button id="dump" class="dump-btn" type="button" hidden>
+              <span id="dump-text">倒掉纸屑</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
