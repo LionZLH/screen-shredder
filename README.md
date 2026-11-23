@@ -60,3 +60,14 @@ npm run tauri dev
 # 4. 构建正式发行包
 npm run tauri build
 ```
+
+---
+
+## 📄 授权协议
+
+本项目采用 [PolyForm Noncommercial License 1.0.0](LICENSE)。
+
+- ✅ **个人学习、研究、娱乐等非商业用途：免费**
+- ❌ **商业用途（公司内部使用、集成进商业产品、收费分发等）：必须事先获得作者授权**
+
+需要商用授权，请通过 [GitHub Issues](https://github.com/LionZLH/screen-shredder/issues) 联系作者。
